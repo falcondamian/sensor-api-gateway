@@ -25,10 +25,13 @@ object Main extends App {
     Ok(Message(s))
   }
 
-  def service: Service[Request, Response] = Bootstrap
-    .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello)
-    .toService
+  def service: Service[Request, Response] =
+    Bootstrap
+      .serve[Text.Plain](healthcheck)
+      .serve[Application.Json](helloWorld :+: hello)
+      .toService
 
-  Await.ready(Http.server.serve(":8081", service))
+  val port = if (System.getProperty("http.port") != null) System.getProperty("http.port").toInt else 8081
+
+  Await.ready(Http.server.serve(s":$port", service))
 }
