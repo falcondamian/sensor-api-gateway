@@ -1,16 +1,17 @@
 package com.falcon.garden
 
-import cats.effect.IO
+import cats.effect.{ExitCode, IO, IOApp, Resource}
+import cats.implicits._
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finagle.{Http, Service}
-import com.twitter.util.Await
 import com.typesafe.scalalogging.LazyLogging
+import io.catbird.util.effect.futureToAsync
 import io.circe.generic.auto._
 import io.finch._
 import io.finch.catsEffect._
 import io.finch.circe._
 
-object Main extends App with LazyLogging {
+object Main extends IOApp with LazyLogging {
 
   case class SensorData(id: String, airHumidity: Double, airTemperature: Double, soilHumidity: Double, timestamp: Long)
 
@@ -29,7 +30,26 @@ object Main extends App with LazyLogging {
       .serve[Application.Json](collect)
       .toService
 
-  val port = if (System.getProperty("http.port") != null) System.getProperty("http.port").toInt else 8081
+  val port: Int = if (System.getProperty("http.port") != null) System.getProperty("http.port").toInt else 8081
 
-  Await.ready(Http.server.serve(s":$port", service))
+  override def run(args: List[String]): IO[ExitCode] = {
+
+    val serverResource = Resource.make {
+      IO(Http.server.serve(s":$port", service))
+    } { server =>
+      futureToAsync[IO, Unit](server.close())
+    }
+
+    val server = serverResource.use { server =>
+      logger.info(s"Application started at ${server.boundAddress}")
+      IO.shift *> IO.never
+    }
+
+    for {
+      _ <- server.handleErrorWith { err =>
+        logger.error("Application failed to start", err)
+        IO.raiseError(err)
+      }
+    } yield ExitCode.Success
+  }
 }

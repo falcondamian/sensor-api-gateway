@@ -1,8 +1,9 @@
-val finchVersion = "0.26.0"
+val finchVersion = "0.32.1"
 val circeVersion = "0.10.1"
 val scalatestVersion = "3.0.5"
 val scalaLoggingVersion = "3.9.2"
 val logbackVersion = "1.2.3"
+val catbirdVersion = "20.3.0"
 
 enablePlugins(JavaAppPackaging)
 
@@ -15,6 +16,7 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "com.github.finagle" %% "finchx-core"  % finchVersion,
       "com.github.finagle" %% "finchx-circe"  % finchVersion,
+      "io.catbird" %% "catbird-effect" % catbirdVersion,
       "io.circe" %% "circe-generic" % circeVersion,
       "ch.qos.logback" % "logback-classic" % logbackVersion,
       "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,

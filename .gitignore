@@ -3,4 +3,4 @@ project/boot
 *.ipr
 *.iml
 *.iws
-.idea
+.idea/
