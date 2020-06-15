@@ -21,21 +21,19 @@ object HttpEndpoints extends LazyLogging {
       Ok("OK")
     }
 
-    def collect: Endpoint[IO, String] = post("collect" :: jsonBody[SensorData]) { data: SensorData =>
+    def collect: Endpoint[IO, Unit] = post("collect" :: jsonBody[SensorData]) { data: SensorData =>
       logger.info("Sensor data received " + data)
-      sensorRepository.save(data)
-      Ok("OK")
+      sensorRepository.save(data).map(Ok)
     }
 
-    def retrieveLatest: Endpoint[IO, String] = get("retrieveLatest") {
+    def retrieveLatest: Endpoint[IO, List[SensorData]] = get("retrieveLatest") {
       logger.info("Retrieving sensor data")
-      sensorRepository.retrieveLatest(100)
-      Ok("OK")
+      sensorRepository.retrieveLatest(100).map(Ok)
     }
 
     val service = Bootstrap
       .serve[Text.Plain](healthcheck)
-      .serve[Application.Json](collect :: retrieveLatest)
+      .serve[Application.Json](collect :+: retrieveLatest)
       .toService
 
     Resource.make {
