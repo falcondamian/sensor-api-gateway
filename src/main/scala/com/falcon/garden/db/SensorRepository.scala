@@ -15,7 +15,8 @@ class SensorRepository(xa: Transactor[IO]) {
       .map(_ -> ())
   }
 
-  def retrieveLatest(limit: Int): IO[List[SensorData]] = ???
+  def retrieveLatest(limit: Int): IO[List[SensorData]] =
+    sql"""select * from sensor_data limit $limit}""".query[SensorData].to[List].transact(xa)
 }
 
 object SensorRepository {
