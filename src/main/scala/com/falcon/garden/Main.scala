@@ -8,11 +8,11 @@ import com.typesafe.scalalogging.LazyLogging
 
 object Main extends IOApp with LazyLogging {
 
-  case class SensorData(sensor:          String,
-                        airHumidity:     Double,
-                        airTemperature:  Double,
-                        soilHumidity:    Double,
-                        collectDateTime: Long)
+  case class SensorData(sensor:             String,
+                        airHumidity:        Double,
+                        airTemperature:     Double,
+                        soilHumidity:       Double,
+                        collectionDateTime: Long)
 
   override def run(args: List[String]): IO[ExitCode] = {
 
