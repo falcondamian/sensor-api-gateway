@@ -4,6 +4,7 @@ val scalatestVersion = "3.0.5"
 val scalaLoggingVersion = "3.9.2"
 val logbackVersion = "1.2.3"
 val catbirdVersion = "20.3.0"
+val doobieVersion = "0.8.8"
 
 enablePlugins(JavaAppPackaging)
 
@@ -20,6 +21,9 @@ lazy val root = (project in file("."))
       "io.circe" %% "circe-generic" % circeVersion,
       "ch.qos.logback" % "logback-classic" % logbackVersion,
       "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
+      "org.tpolecat" %% "doobie-core"  % doobieVersion,
+      "org.tpolecat" %% "doobie-postgres"  % doobieVersion,
+      "org.tpolecat" %% "doobie-hikari"  % doobieVersion,
       "org.scalatest"      %% "scalatest"    % scalatestVersion % "test"
     )
   )

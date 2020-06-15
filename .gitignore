@@ -1,6 +1,6 @@
-target/
-project/boot
+target
 *.ipr
 *.iml
 *.iws
-.idea/
+.idea
+*.log
