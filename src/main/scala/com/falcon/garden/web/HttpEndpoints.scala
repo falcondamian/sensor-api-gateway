@@ -1,15 +1,15 @@
 package com.falcon.garden.web
 
 import cats.effect.{ContextShift, Effect, IO, Resource}
-import com.falcon.garden.Main.SensorData
 import com.falcon.garden.db.SensorRepository
+import com.falcon.garden.domain.SensorData
 import com.twitter.finagle.{Http, ListeningServer}
 import com.typesafe.scalalogging.LazyLogging
 import io.catbird.util.effect.futureToAsync
+import io.finch.circe._
 import io.circe.generic.auto._
 import io.finch._
 import io.finch.catsEffect._
-import io.finch.circe._
 
 object HttpEndpoints extends LazyLogging {
 
@@ -32,8 +32,7 @@ object HttpEndpoints extends LazyLogging {
     }
 
     val service = Bootstrap
-      .serve[Text.Plain](healthcheck)
-      .serve[Application.Json](collect :+: retrieveLatest)
+      .serve[Application.Json](healthcheck :+: collect :+: retrieveLatest)
       .toService
 
     Resource.make {

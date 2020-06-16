@@ -10,7 +10,10 @@ object DataSource {
 
   def transactor()(implicit contextShift: ContextShift[IO]): Resource[IO, HikariTransactor[IO]] = {
 
-    val dbUri    = new URI(System.getenv("DATABASE_URL"))
+    val dbUri = new URI(
+      if (System.getenv("DATABASE_URL") != null) System.getenv("DATABASE_URL")
+      else
+        "postgres://rodcomgkcquvql:e2b35f7a1f4a4a804c891458ee6d01405bab5dffeb7f66d86eee2a538906341a@ec2-54-217-204-34.eu-west-1.compute.amazonaws.com:5432/da511bd9ka0a7l")
     val username = dbUri.getUserInfo.split(":")(0)
     val password = dbUri.getUserInfo.split(":")(1)
     val dbUrl    = "jdbc:postgresql://" + dbUri.getHost + ':' + dbUri.getPort + dbUri.getPath + "?sslmode=require"

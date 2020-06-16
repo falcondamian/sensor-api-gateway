@@ -1,7 +1,7 @@
 package com.falcon.garden.db
 
 import cats.effect.IO
-import com.falcon.garden.Main.SensorData
+import com.falcon.garden.domain.SensorData
 import doobie.util.transactor.Transactor
 import doobie.implicits._
 

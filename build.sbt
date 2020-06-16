@@ -1,5 +1,5 @@
 val finchVersion = "0.32.1"
-val circeVersion = "0.10.1"
+val circeVersion = "0.12.3"
 val scalatestVersion = "3.0.5"
 val scalaLoggingVersion = "3.9.2"
 val logbackVersion = "1.2.3"
