@@ -3,6 +3,7 @@ package com.falcon.garden.db
 import cats.effect.IO
 import com.falcon.garden.domain.SensorData
 import doobie.implicits._
+import doobie.implicits.javatime._
 import doobie.util.transactor.Transactor
 
 class SensorRepository(xa: Transactor[IO]) {
