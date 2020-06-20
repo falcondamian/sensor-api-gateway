@@ -19,6 +19,7 @@ class SensorRepository(xa: Transactor[IO]) {
     sql"""select * from sensor_data order by collectionDateTime desc limit $limit"""
       .query[SensorData]
       .to[List]
+      .map(_.reverse)
       .transact(xa)
 }
 
