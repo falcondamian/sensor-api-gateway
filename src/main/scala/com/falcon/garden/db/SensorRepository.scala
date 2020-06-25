@@ -9,8 +9,8 @@ import doobie.util.transactor.Transactor
 class SensorRepository(xa: Transactor[IO]) {
 
   def save(s: SensorData): IO[Unit] =
-    sql"""INSERT INTO sensor_data (sensor, airHumidity, airTemperature, soilHumidity, collectionDateTime)
-          VALUES(${s.sensor}, ${s.airHumidity}, ${s.airTemperature}, ${s.soilHumidity}, ${s.collectionDateTime})
+    sql"""insert into sensor_data (sensor, airHumidity, airTemperature, soilHumidity, collectionDateTime)
+          values(${s.sensor}, ${s.airHumidity}, ${s.airTemperature}, ${s.soilHumidity}, ${s.collectionDateTime})
          """.update.run
       .transact(xa)
       .map(_ -> ())
